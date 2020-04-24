@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { initNumbers, initPlayers, newPlayer, createBoards } from "./utils";
-import Player from "./Player";
+import config from "./config";
+import { Logo, Button, Icon, IconButton } from "./Elements";
+import Board from "./Board";
 import "./styles.css";
-
-const config = {
-  minPlayers: 2,
-  maxPlayers: 8,
-  difficulty: 15,
-  hints: false
-};
 
 export default function App() {
   // this is for fun, you should useReducer instead...
   const [numbers, setNumbers] = useState([]);
   const [availableNumbers, setAvailableNumbers] = useState([]);
   const [lastNumber, setLastNumber] = useState(null);
-  const [players, setPlayers] = useState(initPlayers(config.minPlayers));
+  const [boards, setBoards] = useState(initPlayers());
   const [playing, setPlaying] = useState(false);
   const [winner, setWinner] = useState(false);
+  const [hints, setHints] = useState(config.showHints);
 
   useEffect(() => {
     const n = numbers.reduce((accumulator, item) => {
@@ -29,12 +25,28 @@ export default function App() {
     if (playing && n.length === 0) setWinner(true);
   }, [numbers, playing]);
 
-  const startGame = () => {
-    const newNumbers = initNumbers();
-    setNumbers(newNumbers);
+  const addBoard = () => {
+    setBoards(prevState =>
+      prevState.length < config.maxPlayers
+        ? [...prevState, newPlayer()]
+        : prevState
+    );
+  };
 
-    const newPlayers = createBoards(players, newNumbers, config.difficulty);
-    setPlayers(newPlayers);
+  const removeBoard = () => {
+    setBoards(prevState =>
+      prevState.length > config.minPlayers
+        ? prevState.slice(0, prevState.length - 1)
+        : prevState
+    );
+  };
+
+  const startGame = () => {
+    const newChip = initNumbers();
+    setNumbers(newChip);
+
+    const newBoards = createBoards(boards, newChip, config.difficulty);
+    setBoards(newBoards);
 
     setWinner(false);
     setPlaying(true);
@@ -51,60 +63,42 @@ export default function App() {
     setNumbers([...newList]);
   };
 
+  const toggleHints = () => {
+    setHints(prevState => !prevState);
+  };
+
   return (
-    <div className="App">
-      <h1>BINGO RIVARELA</h1>
+    <div className="m-8">
+      <Logo />
 
       {!playing ? (
         <div className="block">
-          <h3>{players.length} Jugadores</h3>
-
-          <button
-            type="button"
-            onClick={() =>
-              setPlayers(prevState =>
-                prevState.length < config.maxPlayers
-                  ? [...prevState, newPlayer]
-                  : prevState
-              )
-            }
-          >
-            Agregar un jugador
-          </button>
-
-          <button
-            type="button"
-            onClick={() =>
-              setPlayers(prevState =>
-                prevState.length > config.minPlayers
-                  ? prevState.slice(0, prevState.length - 1)
-                  : prevState
-              )
-            }
-          >
-            Eliminar un jugador
-          </button>
-
+          <h3>{boards.length} Jugadores</h3>
+          <Button onClick={addBoard}>Agregar un jugador</Button>
+          <Button onClick={removeBoard}>Eliminar un jugador</Button>
           <br />
-          <button type="button" onClick={startGame}>
-            Comenzar
-          </button>
+          <Button onClick={startGame}>Comenzar</Button>
+          <div>Ayuda: Juega con las anotaciones de ZOOM</div>
         </div>
       ) : null}
 
       {playing ? (
         <div className="block">
-          <h3>{lastNumber || "-"}</h3>
-          {!winner ? (
-            <button type="button" onClick={pickNumber}>
-              Sacar bolilla
-            </button>
-          ) : (
-            <button type="button" onClick={() => setPlaying(false)}>
-              Nueva partida
-            </button>
-          )}
-          <br />
+          <h3 className="mb-2 text-center text-4xl text-gray-800">
+            {lastNumber || "-"}
+          </h3>
+
+          <div className="mb-6 flex items-center justify-center">
+            {!winner ? (
+              <Button onClick={pickNumber}>Sacar bolilla</Button>
+            ) : (
+              <Button onClick={() => setPlaying(false)}>Nueva partida</Button>
+            )}
+            <IconButton onClick={toggleHints}>
+              {hints ? <Icon>visibility_off</Icon> : <Icon>visibility</Icon>}
+            </IconButton>
+          </div>
+
           {numbers.map(item => {
             return (
               <span
@@ -118,14 +112,8 @@ export default function App() {
             );
           })}
 
-          <hr />
-
-          {players.map(player => (
-            <Player
-              key={player.id}
-              numbers={player.boardNumbers}
-              showHints={config.hints}
-            />
+          {boards.map(board => (
+            <Board key={board.id} data={board} showHints={hints} />
           ))}
         </div>
       ) : null}

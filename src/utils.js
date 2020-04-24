@@ -1,8 +1,9 @@
+import config from "./config";
 import { v4 } from "uuid";
 
 export function initNumbers() {
   const b = [];
-  for (let n = 0; n < 99; n++) {
+  for (let n = 0; n < config.options; n++) {
     b.push({
       number: n,
       active: false,
@@ -13,9 +14,9 @@ export function initNumbers() {
   return b;
 }
 
-export function initPlayers(minPlayers) {
+export function initPlayers() {
   const b = [];
-  for (let n = 0; n < minPlayers; n++) {
+  for (let n = 0; n < config.minPlayers; n++) {
     b.push(newPlayer());
   }
   return b;
@@ -37,20 +38,22 @@ function shuffle(a) {
   return a;
 }
 
-export function createBoards(players, numbers, difficulty) {
-  const gamePlayers = [];
-  console.log(numbers);
+export function createBoards(boards, numbers) {
+  const gameBoards = [];
 
-  players.map(player => {
+  boards.map((board, index) => {
     const randomNumbers = shuffle([...numbers]);
-    const boardNumbers = randomNumbers.slice(0, difficulty);
+    const boardNumbers = randomNumbers.slice(0, config.difficulty);
     const sortedNumbers = boardNumbers.sort(
       (a, b) => parseFloat(a.number) - parseFloat(b.number)
     );
 
-    player.boardNumbers = sortedNumbers;
-    return gamePlayers.push(player);
+    board.id = v4();
+    board.color = config.colors[index];
+    board.numbers = sortedNumbers;
+
+    return gameBoards.push(board);
   });
 
-  return gamePlayers;
+  return gameBoards;
 }
