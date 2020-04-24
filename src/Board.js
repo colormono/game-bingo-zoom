@@ -4,7 +4,10 @@ const Board = ({ data, showHints }) => {
   const { color, numbers } = data;
 
   return (
-    <div role="alert" className="rounded overflow-hidden shadow-lg my-12">
+    <div
+      role="alert"
+      className="rounded overflow-hidden shadow-lg m-8 max-w-md"
+    >
       <div className={`bg-${color || "gray"}-500 px-4 py-2`} />
       <div
         className={`bg-${color || "gray"}-100 px-4 py-3 text-${color ||
@@ -15,8 +18,8 @@ const Board = ({ data, showHints }) => {
             <span
               key={item.number}
               className={`number ${
-                item.active && showHints ? "number--active" : "number--regular"
-              }`}
+                item.active && showHints ? "number--active" : "number--basic"
+              } text-${color || "gray"}-700`}
             >
               {item.number}
             </span>
