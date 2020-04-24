@@ -1,0 +1,25 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.number {
+  display: inline-flex;
+  margin: 4px;
+  padding: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  background: #eee;
+  border: 2px solid #eee;
+  align-items: center;
+  justify-content: center;
+}
+
+.number--regular {
+  border-color: #ccc;
+}
+
+.number--active {
+  border-color: red;
+}
