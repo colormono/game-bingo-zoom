@@ -21,7 +21,7 @@ const IconButton = ({ children, color, className, ...rest }) => (
   <button
     {...rest}
     type="button"
-    className={`text-gray-500 font-bold p-3 focus:outline-none`}
+    className={`text-gray-500 font-bold p-1 m-2 focus:outline-none`}
   >
     {children}
   </button>

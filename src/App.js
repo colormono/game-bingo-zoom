@@ -110,12 +110,11 @@ export default function App() {
 
             <hr className="m-8" />
             <div>
-              <strong>Aclaración:</strong> Este Bingo fue realizado para jugar
-              en familia o con amigos, compartiendo pantalla y usando
-              anotaciones como las de ZOOM.
+              <strong>Hola:</strong> Este Bingo fue realizado para jugar en
+              familia o con amigos, compartiendo pantalla y usando anotaciones
+              como las de ZOOM.
             </div>
             <p className="m-8">
-              <img src="/images/zoom-stamp.png" alt="zoom stamp" />
               <img src="/images/zoom-bar.png" alt="zoom bar" />
             </p>
           </div>
