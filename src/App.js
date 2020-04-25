@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import config from "./config";
 import { initNumbers, initPlayers, newPlayer, createBoards } from "./utils";
 import { Logo, Button, Icon, IconButton, Number } from "./Elements";
@@ -26,6 +26,24 @@ export default function App() {
     if (playing && n.length === 0) setWinner(true);
   }, [numbers, playing]);
 
+  const pickNumber = useCallback(() => {
+    const rand = Math.floor(Math.random() * availableNumbers.length);
+
+    const pickedNumber = availableNumbers[rand];
+    setLastNumber(pickedNumber);
+
+    const newList = numbers;
+    newList[pickedNumber].active = true;
+    setNumbers([...newList]);
+  }, [availableNumbers, numbers]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (playing && timer) pickNumber();
+    }, config.timerInterval);
+    return () => clearInterval(interval);
+  }, [playing, timer, pickNumber]);
+
   const addBoard = () => {
     setBoards(prevState =>
       prevState.length < config.maxPlayers
@@ -51,17 +69,6 @@ export default function App() {
 
     setWinner(false);
     setPlaying(true);
-  };
-
-  const pickNumber = () => {
-    const rand = Math.floor(Math.random() * availableNumbers.length);
-
-    const pickedNumber = availableNumbers[rand];
-    setLastNumber(pickedNumber);
-
-    const newList = numbers;
-    newList[pickedNumber].active = true;
-    setNumbers([...newList]);
   };
 
   const toggleHints = () => {
@@ -113,10 +120,7 @@ export default function App() {
               {lastNumber || "-"}
             </h3>
 
-            <div className="mb-6 flex items-center justify-center">
-              <IconButton onClick={toggleTimer}>
-                {timer ? <Icon>timer_off</Icon> : <Icon>timer</Icon>}
-              </IconButton>
+            <div className="mb-6 text-center">
               {!winner ? (
                 <Button color="red" onClick={pickNumber}>
                   Sacar bolilla
@@ -124,6 +128,12 @@ export default function App() {
               ) : (
                 <Button onClick={() => setPlaying(false)}>Nueva partida</Button>
               )}
+              <br />
+              <IconButton onClick={toggleTimer}>
+                <Icon>timer_3</Icon>{" "}
+                {timer ? <Icon>timelapse</Icon> : <Icon>timer_off</Icon>}
+              </IconButton>
+
               <IconButton onClick={toggleHints}>
                 {hints ? <Icon>visibility_off</Icon> : <Icon>visibility</Icon>}
               </IconButton>

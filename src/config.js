@@ -5,6 +5,7 @@ export default {
   difficulty: 15,
   showHints: false,
   timer: true,
+  timerInterval: 3000,
   colors: [
     "red",
     "blue",
