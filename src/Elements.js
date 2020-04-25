@@ -43,4 +43,26 @@ const Logo = () => (
   </div>
 );
 
-export { Button, Icon, IconButton, Logo, Number };
+const Credits = () => (
+  <div className="m-8 lg:mb-16">
+    <strong>Like it?</strong> Grab the source at{" "}
+    <a
+      href="https://github.com/colormono/game-bingo-zoom"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Github
+    </a>
+    . Coded with{" "}
+    <span role="img" aria-label="love" className="mx-1">
+      ❤️
+    </span>
+    by{" "}
+    <a href="http://colormono.com" target="_blank" rel="noopener noreferrer">
+      Colormono
+    </a>
+    .
+  </div>
+);
+
+export { Button, Icon, IconButton, Logo, Number, Credits };

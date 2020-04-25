@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import config from "./config";
 import { initNumbers, initPlayers, newPlayer, createBoards } from "./utils";
-import { Logo, Button, Icon, IconButton, Number } from "./Elements";
+import { Logo, Button, Icon, IconButton, Number, Credits } from "./Elements";
 import Board from "./Board";
 import "./styles.css";
 
@@ -130,7 +130,7 @@ export default function App() {
       </Button>
 
       <hr className="m-8" />
-      <p className="m-8 lg:mb-16">Creditos</p>
+      <Credits />
     </div>
   );
 
