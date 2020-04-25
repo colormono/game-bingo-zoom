@@ -5,7 +5,7 @@ const Button = ({ children, color, className, ...rest }) => (
     {...rest}
     type="button"
     className={`bg-${color || "gray"}-500 hover:bg-${color ||
-      "gray"}-400 text-white font-bold py-2 px-4 border-b-4 border-${color ||
+      "gray"}-400 text-white font-bold py-2 px-6 border-b-4 border-${color ||
       "gray"}-700 hover:border-${color ||
       "gray"}-500 rounded focus:outline-none ${className}`}
   >
@@ -27,13 +27,13 @@ const IconButton = ({ children, color, className, ...rest }) => (
   </button>
 );
 // color ?
-const Number = ({ color, active, children }) => {
+const Number = ({ color, active, className, children }) => {
   return (
     <div
       className={`inline-flex h-8 w-8 p-4 m-1 items-center justify-center bg-white border-4 rounded-full border-${color ||
-        "gray"}-${active ? 500 : 200} text-${color || "gray"}-700`}
+        "gray"}-${active ? 500 : 200} text-${color || "gray"}-700 ${className}`}
     >
-      <span>{children}</span>
+      {children}
     </div>
   );
 };

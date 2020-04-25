@@ -4,17 +4,17 @@ export default {
   options: 100,
   difficulty: 15,
   showHints: false,
-  timer: true,
+  timer: false,
   timerInterval: 3000,
   colors: [
     "red",
+    "teal",
     "blue",
-    "green",
-    "yellow",
     "purple",
     "orange",
     "pink",
-    "teal",
+    "green",
+    "yellow",
     "gray"
   ]
 };

@@ -88,39 +88,42 @@ export default function App() {
     <div className="items-center text-center min-h-screen w-full md:flex">
       <div className="m-8 md:w-1/3">
         {!playing ? (
-          <div className="m-2 text-center items-center">
+          <div className="m-2 text-center items-center text-gray-700">
             <Logo />
+            <div className="mb-8">
+              <strong>Hola,</strong> armamos este Bingo para jugar en familia o
+              con amigos, compartiendo pantalla y usando anotaciones como las de{" "}
+              <em>ZOOM</em>.
+            </div>
 
-            <h3 className="mb-6 text-center text-6xl text-gray-800">
+            <h3 className="mb-6 text-center text-6xl">
               {boards.length}
               <span className="m-auto block text-sm">Jugadores</span>
             </h3>
 
-            <Button onClick={removeBoard} className="mr-2">
+            <Button
+              onClick={removeBoard}
+              className="mr-2 leading-none text-2xl"
+            >
               -
             </Button>
-            <Button onClick={addBoard}>+</Button>
+            <Button onClick={addBoard} className="leading-none text-2xl">
+              +
+            </Button>
             <Button
               onClick={startGame}
               color="red"
-              className="m-auto mt-4 block"
+              className="text-2xl m-auto mt-4 block"
             >
               Comenzar
             </Button>
 
             <hr className="m-8" />
-            <div>
-              <strong>Hola:</strong> Este Bingo fue realizado para jugar en
-              familia o con amigos, compartiendo pantalla y usando anotaciones
-              como las de ZOOM.
-            </div>
-            <p className="m-8">
-              <img src="/images/zoom-bar.png" alt="zoom bar" />
-            </p>
+            <p className="m-8">Creditos</p>
           </div>
         ) : (
           <div className="m-2">
-            <h3 className="mb-2 text-center text-6xl text-gray-800">
+            <h3 className="mb-2 text-center text-6xl text-gray-700">
               {lastNumber || "-"}
             </h3>
 
@@ -137,7 +140,7 @@ export default function App() {
               <br />
               <IconButton onClick={toggleTimer}>
                 <Icon>timer_3</Icon>{" "}
-                {timer ? <Icon>timelapse</Icon> : <Icon>timer_off</Icon>}
+                {timer ? <Icon>timer_off</Icon> : <Icon>timelapse</Icon>}
               </IconButton>
 
               <IconButton onClick={toggleGrid}>

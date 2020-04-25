@@ -1,5 +1,5 @@
 import React from "react";
-import { Number } from "./Elements";
+import BoardNumber from "./BoardNumber";
 
 const Board = ({ data, showHints }) => {
   const { color, numbers } = data;
@@ -12,13 +12,13 @@ const Board = ({ data, showHints }) => {
       <div className={`bg-${color || "gray"}-500 py-2`} />
       <div className={`bg-${color || "gray"}-100 p-4`}>
         {numbers.map(item => (
-          <Number
+          <BoardNumber
             key={item.number}
+            number={item.number}
             color={color}
+            showHints={showHints}
             active={item.active && showHints}
-          >
-            {item.number}
-          </Number>
+          />
         ))}
       </div>
     </div>
