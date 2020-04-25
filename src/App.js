@@ -159,6 +159,15 @@ export default function App() {
                   </Number>
                 ))
               : null}
+
+            <hr class="mt-6 " />
+
+            <Button
+              onClick={() => setPlaying(false)}
+              className="leading-none text-xs mt-6"
+            >
+              Restart
+            </Button>
           </div>
         )}
       </div>
