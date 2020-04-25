@@ -44,12 +44,13 @@ const Logo = () => (
 );
 
 const Credits = () => (
-  <div className="m-8 lg:mb-16">
+  <div className="m-8 lg:mb-16 text-sm text-gray-500">
     <strong>Like it?</strong> Grab the source at{" "}
     <a
       href="https://github.com/colormono/game-bingo-zoom"
       target="_blank"
       rel="noopener noreferrer"
+      className="underline"
     >
       Github
     </a>
@@ -58,7 +59,12 @@ const Credits = () => (
       ❤️
     </span>
     by{" "}
-    <a href="http://colormono.com" target="_blank" rel="noopener noreferrer">
+    <a
+      href="http://colormono.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline"
+    >
       Colormono
     </a>
     .

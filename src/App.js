@@ -126,7 +126,7 @@ export default function App() {
         color="red"
         className="text-2xl m-auto mt-4 block"
       >
-        PLAY
+        JUGAR
       </Button>
 
       <hr className="m-8" />

@@ -10,7 +10,7 @@ const BoardNumber = ({ number, color, active, showHints }) => {
       className={`flex items-center justify-center focus:outline-none w-full`}
     >
       <div
-        className={`relative w-full p-1 bg-white border-4 rounded-4 border-${color ||
+        className={`relative w-full p-1 bg-white border-2 rounded-md border-${color ||
           "gray"}-${active && showHints ? 500 : 200} text-${color ||
           "gray"}-700 text-xl`}
       >
