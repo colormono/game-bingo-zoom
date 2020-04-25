@@ -15,6 +15,7 @@ export default function App() {
   const [winner, setWinner] = useState(false);
   const [hints, setHints] = useState(config.showHints);
   const [timer, setTimer] = useState(config.timer);
+  const [grid, setGrid] = useState(true);
 
   useEffect(() => {
     const n = numbers.reduce((accumulator, item) => {
@@ -39,10 +40,10 @@ export default function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (playing && timer) pickNumber();
+      if (playing && timer && !winner) pickNumber();
     }, config.timerInterval);
     return () => clearInterval(interval);
-  }, [playing, timer, pickNumber]);
+  }, [playing, timer, winner, pickNumber]);
 
   const addBoard = () => {
     setBoards(prevState =>
@@ -77,6 +78,10 @@ export default function App() {
 
   const toggleTimer = () => {
     setTimer(prevState => !prevState);
+  };
+
+  const toggleGrid = () => {
+    setGrid(prevState => !prevState);
   };
 
   return (
@@ -126,7 +131,9 @@ export default function App() {
                   Sacar bolilla
                 </Button>
               ) : (
-                <Button onClick={() => setPlaying(false)}>Nueva partida</Button>
+                <Button color="purple" onClick={() => setPlaying(false)}>
+                  Nueva partida
+                </Button>
               )}
               <br />
               <IconButton onClick={toggleTimer}>
@@ -134,16 +141,22 @@ export default function App() {
                 {timer ? <Icon>timelapse</Icon> : <Icon>timer_off</Icon>}
               </IconButton>
 
+              <IconButton onClick={toggleGrid}>
+                {grid ? <Icon>grid_off</Icon> : <Icon>grid_on</Icon>}
+              </IconButton>
+
               <IconButton onClick={toggleHints}>
                 {hints ? <Icon>visibility_off</Icon> : <Icon>visibility</Icon>}
               </IconButton>
             </div>
 
-            {numbers.map(item => (
-              <Number key={item.number} active={item.active}>
-                {item.number}
-              </Number>
-            ))}
+            {grid
+              ? numbers.map(item => (
+                  <Number key={item.number} active={item.active}>
+                    {item.number}
+                  </Number>
+                ))
+              : null}
           </div>
         )}
       </div>
