@@ -176,7 +176,7 @@ export default function App() {
   const renderGameBoards = () => (
     <div className="flex flex-col items-center justify-center sm:flex-row flex-wrap mx-3">
       {boards.map(board => (
-        <div className="sm:w-1/2 xl:w-1/3" key={board.id}>
+        <div className="sm:w-1/2" key={board.id}>
           <Board data={board} showHints={hints} />
         </div>
       ))}

@@ -26,20 +26,19 @@ const IconButton = ({ children, color, className, ...rest }) => (
     {children}
   </button>
 );
-// color ?
-const Number = ({ color, active, className, children }) => {
-  return (
-    <div
-      className={`inline-flex h-8 w-8 p-4 m-1 items-center justify-center bg-white border-4 rounded-full border-${color ||
-        "gray"}-${active ? 500 : 200} text-${color || "gray"}-700 ${className}`}
-    >
-      {children}
-    </div>
-  );
-};
+
+const Number = ({ active, children }) => (
+  <div
+    className={`inline-flex h-6 w-6 p-3 m-px items-center justify-center bg-white border-4 rounded-full border-gray-${
+      active ? 500 : 200
+    } text-gray-700 text-md`}
+  >
+    {children}
+  </div>
+);
 
 const Logo = () => (
-  <div className="text-center pb-6 font-black text-gray-900 text-4xl">
+  <div className="text-center pb-6 font-black text-gray-900 text-5xl">
     <h1>BINGO RIVARELA</h1>
   </div>
 );
