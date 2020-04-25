@@ -84,113 +84,114 @@ export default function App() {
     setGrid(prevState => !prevState);
   };
 
-  return (
-    <div className="items-center text-center min-h-screen w-full md:flex">
-      <div className="m-8 md:w-1/3">
-        {!playing ? (
-          <div className="m-2 text-center items-center text-gray-700">
-            <Logo />
-            <div className="mb-8">
-              <strong>Hola,</strong> armamos este Bingo para jugar en familia o
-              con amigos, compartiendo pantalla y usando anotaciones como las de{" "}
-              <em>ZOOM</em>.
-            </div>
+  const renderAppBanner = () => (
+    <div className="relative bg-gray-500 w-full h-64 lg:min-h-screen">
+      <img
+        src="/images/cover.jpg"
+        alt="ZOOM"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+      />
+    </div>
+  );
 
-            <h3 className="mb-6 text-center text-6xl">
-              {boards.length}
-              <span className="m-auto block text-sm">Jugadores</span>
-            </h3>
+  const renderAppMenu = () => (
+    <div className="mx-4 my-16 text-center text-gray-700">
+      <Logo />
 
-            <Button
-              onClick={removeBoard}
-              className="mr-2 leading-none text-2xl"
-            >
-              -
-            </Button>
-            <Button onClick={addBoard} className="leading-none text-2xl">
-              +
-            </Button>
-            <Button
-              onClick={startGame}
-              color="red"
-              className="text-2xl m-auto mt-4 block"
-            >
-              Comenzar
-            </Button>
+      <p className="mx-auto mb-8 max-w-md">
+        <strong>Hola,</strong> armamos este Bingo para jugar con familia o
+        amigos, compartiendo pantalla y usando anotaciones como las de{" "}
+        <em>ZOOM</em>.
+      </p>
 
-            <hr className="m-8" />
-            <p className="m-8">Creditos</p>
-          </div>
+      <h3 className="mb-6 flex items-center justify-center text-6xl">
+        {boards.length}
+        <span className="material-icons ml-4">insert_emoticon</span>
+      </h3>
+
+      <Button onClick={removeBoard} className="mr-2 leading-none text-2xl">
+        -
+      </Button>
+      <Button onClick={addBoard} className="leading-none text-2xl">
+        +
+      </Button>
+      <Button
+        onClick={startGame}
+        color="red"
+        className="text-2xl m-auto mt-4 block"
+      >
+        PLAY
+      </Button>
+
+      <hr className="m-8" />
+      <p className="m-8 lg:mb-16">Creditos</p>
+    </div>
+  );
+
+  const renderGameMenu = () => (
+    <div className="m-2 text-center">
+      <h3 className="text-6xl text-gray-700">{lastNumber || "-"}</h3>
+
+      <div className="my-2">
+        {!winner ? (
+          <Button color="red" onClick={pickNumber}>
+            Sacar bolilla
+          </Button>
         ) : (
-          <div className="m-2">
-            <h3 className="mb-2 text-center text-6xl text-gray-700">
-              {lastNumber || "-"}
-            </h3>
-
-            <div className="mb-6 text-center">
-              {!winner ? (
-                <Button color="red" onClick={pickNumber}>
-                  Sacar bolilla
-                </Button>
-              ) : (
-                <Button color="purple" onClick={() => setPlaying(false)}>
-                  Nueva partida
-                </Button>
-              )}
-              <br />
-              <IconButton onClick={toggleTimer}>
-                <Icon>timer_3</Icon>{" "}
-                {timer ? <Icon>timer_off</Icon> : <Icon>timelapse</Icon>}
-              </IconButton>
-
-              <IconButton onClick={toggleGrid}>
-                {grid ? <Icon>grid_off</Icon> : <Icon>grid_on</Icon>}
-              </IconButton>
-
-              <IconButton onClick={toggleHints}>
-                {hints ? <Icon>visibility_off</Icon> : <Icon>visibility</Icon>}
-              </IconButton>
-            </div>
-
-            {grid
-              ? numbers.map(item => (
-                  <Number key={item.number} active={item.active}>
-                    {item.number}
-                  </Number>
-                ))
-              : null}
-
-            <hr class="mt-6 " />
-
-            <Button
-              onClick={() => setPlaying(false)}
-              className="leading-none text-xs mt-6"
-            >
-              Restart
-            </Button>
-          </div>
+          <Button color="purple" onClick={() => setPlaying(false)}>
+            Nueva partida
+          </Button>
         )}
       </div>
 
-      <div className="md:w-2/3">
-        {playing ? (
-          <div className="flex justify-center flex-wrap m-8">
-            {boards.map(board => (
-              <div className="w-1/3" key={board.id}>
-                <Board data={board} showHints={hints} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="relative bg-gray-500 w-full h-64 md:min-h-screen">
-            <img
-              src="/images/cover.jpg"
-              alt="zoom stamp"
-              className="absolute inset-0 h-full w-full object-cover object-center"
-            />
-          </div>
-        )}
+      <div className="mb-2">
+        <IconButton onClick={toggleTimer}>
+          <Icon>timer_3</Icon>{" "}
+          {timer ? <Icon>timer_off</Icon> : <Icon>timelapse</Icon>}
+        </IconButton>
+
+        <IconButton onClick={toggleGrid}>
+          {grid ? <Icon>grid_off</Icon> : <Icon>grid_on</Icon>}
+        </IconButton>
+
+        <IconButton onClick={toggleHints}>
+          {hints ? <Icon>visibility_off</Icon> : <Icon>visibility</Icon>}
+        </IconButton>
+
+        <IconButton onClick={() => setPlaying(false)}>
+          <Icon>cached</Icon>
+        </IconButton>
       </div>
+
+      {grid
+        ? numbers.map(item => (
+            <Number key={item.number} active={item.active}>
+              {item.number}
+            </Number>
+          ))
+        : null}
+    </div>
+  );
+
+  const renderGameBoards = () => (
+    <div className="flex flex-col items-center justify-center sm:flex-row flex-wrap mx-3">
+      {boards.map(board => (
+        <div className="sm:w-1/2 xl:w-1/3" key={board.id}>
+          <Board data={board} showHints={hints} />
+        </div>
+      ))}
+    </div>
+  );
+
+  return !playing ? (
+    <div className="flex flex-col lg:flex-row-reverse">
+      <div className="lg:w-1/2">{renderAppBanner()}</div>
+      <div className="lg:w-1/2 lg:self-center">{renderAppMenu()}</div>
+    </div>
+  ) : (
+    <div className="flex flex-col w-full items-center justify-center min-h-screen lg:flex-row">
+      <div className="lg:w-1/3 xl:w-1/4">{renderGameMenu()}</div>
+      <div className="lg:w-2/3 xl:w-3/4">{renderGameBoards()}</div>
     </div>
   );
 }
