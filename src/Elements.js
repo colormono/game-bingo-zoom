@@ -26,11 +26,22 @@ const IconButton = ({ children, color, className, ...rest }) => (
     {children}
   </button>
 );
+// color ?
+const Number = ({ color, active, children }) => {
+  return (
+    <div
+      className={`inline-flex h-8 w-8 p-4 m-1 items-center justify-center bg-white border-4 rounded-full border-${color ||
+        "gray"}-${active ? 500 : 200} text-${color || "gray"}-700`}
+    >
+      <span>{children}</span>
+    </div>
+  );
+};
 
 const Logo = () => (
-  <div className="text-center pb-6">
+  <div className="text-center pb-6 font-black text-gray-900 text-4xl">
     <h1>BINGO RIVARELA</h1>
   </div>
 );
 
-export { Button, Icon, IconButton, Logo };
+export { Button, Icon, IconButton, Logo, Number };

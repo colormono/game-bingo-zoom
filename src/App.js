@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { initNumbers, initPlayers, newPlayer, createBoards } from "./utils";
 import config from "./config";
-import { Logo, Button, Icon, IconButton } from "./Elements";
+import { initNumbers, initPlayers, newPlayer, createBoards } from "./utils";
+import { Logo, Button, Icon, IconButton, Number } from "./Elements";
 import Board from "./Board";
 import "./styles.css";
 
@@ -14,6 +14,7 @@ export default function App() {
   const [playing, setPlaying] = useState(false);
   const [winner, setWinner] = useState(false);
   const [hints, setHints] = useState(config.showHints);
+  const [timer, setTimer] = useState(config.timer);
 
   useEffect(() => {
     const n = numbers.reduce((accumulator, item) => {
@@ -67,13 +68,18 @@ export default function App() {
     setHints(prevState => !prevState);
   };
 
+  const toggleTimer = () => {
+    setTimer(prevState => !prevState);
+  };
+
   return (
-    <div className="flex items-center min-h-screen w-full">
-      <div className="w-1/3 m-8">
-        <Logo />
+    <div className="items-center text-center min-h-screen w-full md:flex">
+      <div className="m-8 md:w-1/3">
         {!playing ? (
           <div className="m-2 text-center items-center">
-            <h3 className="mb-6 text-center text-4xl text-gray-800">
+            <Logo />
+
+            <h3 className="mb-6 text-center text-6xl text-gray-800">
               {boards.length}
               <span className="m-auto block text-sm">Jugadores</span>
             </h3>
@@ -89,14 +95,28 @@ export default function App() {
             >
               Comenzar
             </Button>
+
+            <hr className="m-8" />
+            <div>
+              <strong>Aclaración:</strong> Este Bingo fue realizado para jugar
+              en familia o con amigos, compartiendo pantalla y usando
+              anotaciones como las de ZOOM.
+            </div>
+            <p className="m-8">
+              <img src="/images/zoom-stamp.png" alt="zoom stamp" />
+              <img src="/images/zoom-bar.png" alt="zoom bar" />
+            </p>
           </div>
         ) : (
           <div className="m-2">
-            <h3 className="mb-2 mr-10 text-center text-4xl text-gray-800">
+            <h3 className="mb-2 text-center text-6xl text-gray-800">
               {lastNumber || "-"}
             </h3>
 
             <div className="mb-6 flex items-center justify-center">
+              <IconButton onClick={toggleTimer}>
+                {timer ? <Icon>timer_off</Icon> : <Icon>timer</Icon>}
+              </IconButton>
               {!winner ? (
                 <Button color="red" onClick={pickNumber}>
                   Sacar bolilla
@@ -109,25 +129,18 @@ export default function App() {
               </IconButton>
             </div>
 
-            {numbers.map(item => {
-              return (
-                <span
-                  key={item.number}
-                  className={`number ${
-                    item.active ? "number--active" : "number--regular"
-                  }`}
-                >
-                  {item.number}
-                </span>
-              );
-            })}
+            {numbers.map(item => (
+              <Number key={item.number} active={item.active}>
+                {item.number}
+              </Number>
+            ))}
           </div>
         )}
       </div>
 
-      <div className="w-2/3">
+      <div className="md:w-2/3">
         {playing ? (
-          <div className="flex justify-center flex-wrap">
+          <div className="flex justify-center flex-wrap m-8">
             {boards.map(board => (
               <div className="w-1/3" key={board.id}>
                 <Board data={board} showHints={hints} />
@@ -135,8 +148,12 @@ export default function App() {
             ))}
           </div>
         ) : (
-          <div className="flex items-center justify-center bg-gray-500 min-h-screen w-full">
-            <div>Ayuda: Juega con las anotaciones de ZOOM</div>
+          <div className="relative bg-gray-500 w-full h-64 md:min-h-screen">
+            <img
+              src="/images/cover.jpg"
+              alt="zoom stamp"
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
           </div>
         )}
       </div>
