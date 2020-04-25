@@ -7,8 +7,9 @@ export function initNumbers() {
     b.push({
       number: n,
       active: false,
-      image: "soon",
-      name: "soon"
+      // soon
+      image: "Cow.jpg",
+      relation: "C"
     });
   }
   return b;

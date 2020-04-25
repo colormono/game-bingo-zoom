@@ -13,6 +13,7 @@ export default function App() {
   const [boards, setBoards] = useState(initPlayers());
   const [playing, setPlaying] = useState(false);
   const [winner, setWinner] = useState(false);
+  const [colorWinner, setColorWinner] = useState(false);
   const [hints, setHints] = useState(config.showHints);
   const [timer, setTimer] = useState(config.timer);
   const [grid, setGrid] = useState(true);
@@ -68,6 +69,7 @@ export default function App() {
     const newBoards = createBoards(boards, newChip, config.difficulty);
     setBoards(newBoards);
 
+    setColorWinner(false);
     setWinner(false);
     setPlaying(true);
   };
@@ -82,6 +84,10 @@ export default function App() {
 
   const toggleGrid = () => {
     setGrid(prevState => !prevState);
+  };
+
+  const setGameWinner = c => {
+    if (!colorWinner) setColorWinner(c);
   };
 
   const renderAppBanner = () => (
@@ -130,17 +136,34 @@ export default function App() {
 
   const renderGameMenu = () => (
     <div className="m-2 text-center">
-      <h3 className="text-6xl text-gray-700">{lastNumber || "-"}</h3>
-
       <div className="my-2">
         {!winner ? (
-          <Button color="red" onClick={pickNumber}>
-            Sacar bolilla
-          </Button>
+          <>
+            <h3 className="text-6xl text-gray-700">{lastNumber || "-"}</h3>
+            <Button color="red" onClick={pickNumber}>
+              Sacar bolilla
+            </Button>
+          </>
         ) : (
-          <Button color="purple" onClick={() => setPlaying(false)}>
-            Nueva partida
-          </Button>
+          <>
+            <h3 className="flex items-center justify-center text-4xl text-gray-700 my-2">
+              <span role="img" aria-label="winner" className="m-1">
+                🎉
+              </span>
+              <span role="img" aria-label="winner" className="m-1">
+                👉
+              </span>
+              <span
+                className={`inline-block rounded-full mx-4 h-8 w-8 bg-${colorWinner}-500 shadow-lg`}
+              />
+              <span role="img" aria-label="party" className="m-1">
+                👏
+              </span>
+            </h3>
+            <Button color="purple" onClick={() => setPlaying(false)}>
+              Nueva partida
+            </Button>
+          </>
         )}
       </div>
 
@@ -177,7 +200,7 @@ export default function App() {
     <div className="flex flex-col items-center justify-center sm:flex-row flex-wrap mx-3">
       {boards.map(board => (
         <div className="sm:w-1/2" key={board.id}>
-          <Board data={board} showHints={hints} />
+          <Board data={board} showHints={hints} setGameWinner={setGameWinner} />
         </div>
       ))}
     </div>

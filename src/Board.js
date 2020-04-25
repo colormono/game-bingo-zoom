@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BoardNumber from "./BoardNumber";
 
-const Board = ({ data, showHints }) => {
+const Board = ({ data, showHints, setGameWinner }) => {
   const { color, numbers } = data;
+  const pending = numbers.filter(item => !item.active).length;
+
+  useEffect(() => {
+    if (pending === 0) setGameWinner(color);
+  }, [color, setGameWinner, pending]);
 
   return (
     <div role="alert" className="rounded overflow-hidden shadow-lg m-4">
