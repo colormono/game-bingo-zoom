@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
+import useWindowSize from "react-use/lib/useWindowSize";
+import Confetti from "react-confetti";
 import config from "./config";
 import { initNumbers, initPlayers, newPlayer, createBoards } from "./utils";
 import { Logo, Button, Icon, IconButton, Number, Credits } from "./Elements";
@@ -17,6 +19,8 @@ export default function App() {
   const [hints, setHints] = useState(config.showHints);
   const [timer, setTimer] = useState(config.timer);
   const [grid, setGrid] = useState(true);
+  const { width, height } = useWindowSize();
+  const [party, setParty] = useState(false);
 
   useEffect(() => {
     const n = numbers.reduce((accumulator, item) => {
@@ -25,7 +29,10 @@ export default function App() {
     }, []);
     setAvailableNumbers(n);
 
-    if (playing && n.length === 0) setWinner(true);
+    if (playing && n.length === 0) {
+      setParty(true);
+      setWinner(true);
+    }
   }, [numbers, playing]);
 
   const pickNumber = useCallback(() => {
@@ -213,6 +220,40 @@ export default function App() {
     </div>
   ) : (
     <div className="flex flex-col w-full items-center justify-center min-h-screen lg:flex-row">
+      <Confetti
+        width={width}
+        height={height}
+        style={{ pointerEvents: "none" }}
+        colors={[
+          "#A0AEC0",
+          "#F56565",
+          "#ED8936",
+          "#ECC94B",
+          "#48BB78",
+          "#38B2AC",
+          "#4299E1",
+          "#667EEA",
+          "#9F7AEA",
+          "#ED64A6",
+          "#4A5568",
+          "#C53030",
+          "#C05621",
+          "#B7791F",
+          "#2F855A",
+          "#2C7A7B",
+          "#2B6CB0",
+          "#4C51BF",
+          "#6B46C1",
+          "#B83280"
+        ]}
+        numberOfPieces={party ? 500 : 0}
+        recycle={false}
+        onConfettiComplete={confetti => {
+          // confettiCompleteAction()
+          setParty(false);
+          confetti.reset();
+        }}
+      />
       <div className="lg:w-1/3 xl:w-1/4">{renderGameMenu()}</div>
       <div className="lg:w-2/3 xl:w-3/4">{renderGameBoards()}</div>
     </div>
