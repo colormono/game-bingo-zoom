@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useWindowSize from "react-use/lib/useWindowSize";
-import Confetti from "react-confetti";
+import Confetti from "confetti-react";
 import config from "./config";
 import { initNumbers, initPlayers, newPlayer, createBoards } from "./utils";
 import { Logo, Button, Icon, IconButton, Number, Credits } from "./Elements";
@@ -11,7 +11,7 @@ export default function App() {
   // this is for fun, you should useReducer instead...
   const [numbers, setNumbers] = useState([]);
   const [availableNumbers, setAvailableNumbers] = useState([]);
-  const [lastNumber, setLastNumber] = useState(null);
+  const [lastNumber, setLastNumber] = useState(false);
   const [boards, setBoards] = useState(initPlayers());
   const [playing, setPlaying] = useState(false);
   const [winner, setWinner] = useState(false);
@@ -97,6 +97,11 @@ export default function App() {
     if (!colorWinner) setColorWinner(c);
   };
 
+  const restartGame = () => {
+    setTimer(false);
+    setPlaying(false);
+  };
+
   const renderAppBanner = () => (
     <div className="relative bg-gray-500 w-full h-64 lg:min-h-screen">
       <img
@@ -146,7 +151,9 @@ export default function App() {
       <div className="my-2">
         {!winner ? (
           <>
-            <h3 className="text-6xl text-gray-700">{lastNumber || "-"}</h3>
+            <h3 className="text-6xl text-gray-700">
+              {lastNumber !== false ? lastNumber : "-"}
+            </h3>
             <Button color="red" onClick={pickNumber}>
               Sacar bolilla
             </Button>
@@ -167,7 +174,7 @@ export default function App() {
                 👏
               </span>
             </h3>
-            <Button color="purple" onClick={() => setPlaying(false)}>
+            <Button color="purple" onClick={restartGame}>
               Nueva partida
             </Button>
           </>
@@ -188,7 +195,7 @@ export default function App() {
           {hints ? <Icon>visibility_off</Icon> : <Icon>visibility</Icon>}
         </IconButton>
 
-        <IconButton onClick={() => setPlaying(false)}>
+        <IconButton onClick={restartGame}>
           <Icon>cached</Icon>
         </IconButton>
       </div>
@@ -223,7 +230,7 @@ export default function App() {
       <Confetti
         width={width}
         height={height}
-        style={{ pointerEvents: "none" }}
+        // style={{ pointerEvents: "none" }}
         colors={[
           "#A0AEC0",
           "#F56565",
@@ -234,17 +241,7 @@ export default function App() {
           "#4299E1",
           "#667EEA",
           "#9F7AEA",
-          "#ED64A6",
-          "#4A5568",
-          "#C53030",
-          "#C05621",
-          "#B7791F",
-          "#2F855A",
-          "#2C7A7B",
-          "#2B6CB0",
-          "#4C51BF",
-          "#6B46C1",
-          "#B83280"
+          "#ED64A6"
         ]}
         numberOfPieces={party ? 500 : 0}
         recycle={false}
