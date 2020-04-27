@@ -50,6 +50,7 @@ export default function App() {
     const interval = setInterval(() => {
       if (playing && timer && !winner) pickNumber();
     }, config.timerInterval);
+
     return () => clearInterval(interval);
   }, [playing, timer, winner, pickNumber]);
 
@@ -94,7 +95,11 @@ export default function App() {
   };
 
   const setGameWinner = c => {
-    if (!colorWinner) setColorWinner(c);
+    if (!colorWinner) {
+      setColorWinner(c);
+      setWinner(true);
+      setParty(true);
+    }
   };
 
   const restartGame = () => {
