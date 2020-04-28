@@ -8,5 +8,5 @@ Hola, entre los integrantes mi casa (Rivas-Varela) armamos este Bingo para jugar
 
 - Crafted with [React](https://reactjs.org/) and [Tailwind](https://tailwindcss.com/).
 - Coded in [Codesandbox](https://codesandbox.io/s/github/colormono/game-bingo-zoom)
-- Deployed with [Varcel](https://vercel.com/)
+- Deployed with [Vercel](https://vercel.com/)
 - Confetti with [confetti-react](https://github.com/rkuykendall/confetti-react)

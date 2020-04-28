@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import BoardNumber from "./BoardNumber";
 
-const Board = ({ data, showHints, setGameWinner }) => {
+const Board = ({ data, showHints, setWinner }) => {
   const { color, numbers } = data;
   const pending = numbers.filter(item => !item.active).length;
 
   useEffect(() => {
-    if (pending === 0) setGameWinner(color);
-  }, [color, setGameWinner, pending]);
+    if (pending === 0) setWinner(color);
+  }, [color, setWinner, pending]);
 
   return (
     <div role="alert" className="rounded overflow-hidden shadow-lg m-4">
@@ -15,8 +15,8 @@ const Board = ({ data, showHints, setGameWinner }) => {
       <div className={`bg-${color || "gray"}-100 p-3 grid grid-cols-5 gap-1`}>
         {numbers.map(item => (
           <BoardNumber
-            key={item.number}
-            number={item.number}
+            key={item.id}
+            number={item.id}
             color={color}
             showHints={showHints}
             active={item.active && showHints}

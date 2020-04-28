@@ -38,7 +38,7 @@ const Number = ({ active, children }) => (
 );
 
 const Logo = () => (
-  <div className="text-center pb-6 font-black text-gray-900 text-5xl">
+  <div className="text-center pb-6 font-black text-gray-900 text-5xl leading-none">
     <h1>BINGO RIVARELA</h1>
   </div>
 );

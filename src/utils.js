@@ -3,11 +3,12 @@ import { v4 } from "uuid";
 
 export function initNumbers() {
   const b = [];
-  for (let n = 0; n < config.options; n++) {
+  for (let n = 0; n < 100; n++) {
     b.push({
-      number: n,
+      id: n,
       active: false,
       // soon
+      type: "image",
       image: "Cow.jpg",
       relation: "C"
     });
@@ -46,7 +47,7 @@ export function createBoards(boards, numbers) {
     const randomNumbers = shuffle([...numbers]);
     const boardNumbers = randomNumbers.slice(0, config.difficulty);
     const sortedNumbers = boardNumbers.sort(
-      (a, b) => parseFloat(a.number) - parseFloat(b.number)
+      (a, b) => parseFloat(a.id) - parseFloat(b.id)
     );
 
     board.id = v4();
