@@ -5,6 +5,7 @@ import config from "./config";
 import { dbNumbers } from "./db";
 import { initPlayers, newPlayer, createBoards } from "./utils";
 import { Logo, Button, Icon, IconButton, Number, Credits } from "./Elements";
+import Spinner from "./Spinner";
 import Board from "./Board";
 import "./styles.css";
 
@@ -13,12 +14,11 @@ const initialState = {
   lastNumber: false,
   boards: initPlayers(),
   playing: false,
-  winner: false,
-  colorWinner: false, //lastWinner
+  lastWinner: false,
   party: false,
-  timer: false, // useTimer
-  hints: false, //showHints
-  grid: true // showGrid
+  autoplay: false,
+  showHints: false,
+  showGrid: true
 };
 
 function reducer(state, action) {
@@ -63,9 +63,8 @@ function reducer(state, action) {
     case "SET_WINNER":
       return {
         ...state,
-        winner: true,
         party: true,
-        colorWinner: action.payload
+        lastWinner: action.payload
       };
 
     case "PARTY_OVER":
@@ -86,7 +85,7 @@ function reducer(state, action) {
 export default function App() {
   const { width, height } = useWindowSize();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { playing, numbers, lastNumber, timer, winner } = state;
+  const { playing, numbers, lastNumber, lastWinner, autoplay } = state;
 
   const pickNumber = useCallback(() => {
     if (playing) {
@@ -115,11 +114,11 @@ export default function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (playing && timer && !winner) pickNumber();
+      if (playing && autoplay && !lastWinner) pickNumber();
     }, config.timerInterval);
 
     return () => clearInterval(interval);
-  }, [playing, timer, winner, pickNumber]);
+  }, [playing, autoplay, lastWinner, pickNumber]);
 
   const startGame = () => {
     const newBoards = createBoards(state.boards, numbers, config.difficulty);
@@ -132,7 +131,7 @@ export default function App() {
   };
 
   const setWinner = c => {
-    if (!state.colorWinner) dispatch({ type: "SET_WINNER", payload: c });
+    if (!state.lastWinner) dispatch({ type: "SET_WINNER", payload: c });
   };
 
   const renderAppBanner = () => (
@@ -155,9 +154,11 @@ export default function App() {
         <em>ZOOM</em>.
       </p>
 
-      <h3 className="mb-6 flex items-center justify-center text-6xl">
+      <h3 className="flex font-semibold items-center justify-center text-6xl">
         {state.boards.length}
-        <span className="material-icons ml-4">insert_emoticon</span>
+        <span role="img" aria-label="players" className="ml-2 text-3xl">
+          😀
+        </span>
       </h3>
 
       <Button
@@ -187,20 +188,24 @@ export default function App() {
 
   const renderGameMenu = () => (
     <div className="m-2 text-center">
-      {!winner ? (
+      {!lastWinner ? (
         <>
-          <h3 className="text-6xl text-gray-700 leading-tight my-4">
+          <h3 className="text-6xl text-gray-700 font-semibold leading-tight my-2">
             {lastNumber ? (
               <>
                 {lastNumber.number}
-                <div className="text-xl text-gray-700 italic">
-                  "{lastNumber.hint}"
+                <div className="text-xl text-hairline text-gray-700 italic">
+                  {lastNumber.hint}
                 </div>
               </>
             ) : (
-              "-"
+              <span role="img" aria-label="start">
+                👇
+              </span>
             )}
           </h3>
+
+          <Spinner trigger={autoplay} />
 
           <Button color="red" onClick={pickNumber}>
             Sacar bolilla
@@ -217,7 +222,7 @@ export default function App() {
             </span>
             <span
               className={`inline-block rounded-full mx-4 h-8 w-8 bg-${
-                state.colorWinner
+                state.lastWinner
               }-500 shadow-lg`}
             />
             <span role="img" aria-label="party" className="m-1">
@@ -239,12 +244,12 @@ export default function App() {
             dispatch({
               type: "TOGGLE_FEATURE",
               payload: {
-                timer: !state.timer
+                autoplay: !state.autoplay
               }
             })
           }
         >
-          {state.timer ? <Icon>pause</Icon> : <Icon>play_arrow</Icon>}
+          {state.autoplay ? <Icon>pause</Icon> : <Icon>play_arrow</Icon>}
         </IconButton>
 
         <IconButton
@@ -252,12 +257,12 @@ export default function App() {
             dispatch({
               type: "TOGGLE_FEATURE",
               payload: {
-                grid: !state.grid
+                showGrid: !state.showGrid
               }
             })
           }
         >
-          {state.grid ? <Icon>grid_off</Icon> : <Icon>grid_on</Icon>}
+          {state.showGrid ? <Icon>grid_off</Icon> : <Icon>grid_on</Icon>}
         </IconButton>
 
         <IconButton
@@ -265,12 +270,16 @@ export default function App() {
             dispatch({
               type: "TOGGLE_FEATURE",
               payload: {
-                hints: !state.hints
+                showHints: !state.showHints
               }
             })
           }
         >
-          {state.hints ? <Icon>visibility_off</Icon> : <Icon>visibility</Icon>}
+          {state.showHints ? (
+            <Icon>visibility_off</Icon>
+          ) : (
+            <Icon>visibility</Icon>
+          )}
         </IconButton>
 
         <IconButton onClick={restartGame}>
@@ -278,7 +287,7 @@ export default function App() {
         </IconButton>
       </div>
 
-      {state.grid
+      {state.showGrid
         ? numbers.map(item => (
             <Number key={item.id} active={item.active}>
               {item.id}
@@ -292,7 +301,11 @@ export default function App() {
     <div className="flex flex-col items-center justify-center sm:flex-row flex-wrap mx-3">
       {state.boards.map(board => (
         <div className="sm:w-1/2" key={board.id}>
-          <Board data={board} showHints={state.hints} setWinner={setWinner} />
+          <Board
+            data={board}
+            showHints={state.showHints}
+            setWinner={setWinner}
+          />
         </div>
       ))}
     </div>
