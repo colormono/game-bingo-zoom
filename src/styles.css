@@ -1,3 +1,5 @@
+/* prefixed by https://autoprefixer.github.io (PostCSS: v7.0.26, autoprefixer: v9.7.3) */
+
 body {
   background-color: #edf2f7;
 }
@@ -12,10 +14,20 @@ body {
 }
 
 .animation {
-  animation: sampleanimation 4.5s infinite;
+  -webkit-animation: spinnerAnimation 4.5s infinite;
+  animation: spinnerAnimation 4.5s infinite;
 }
 
-@keyframes sampleanimation {
+@-webkit-keyframes spinnerAnimation {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes spinnerAnimation {
   0% {
     width: 0%;
   }
