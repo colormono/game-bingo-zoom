@@ -207,8 +207,8 @@ export default function App() {
 
           <Spinner trigger={autoplay} />
 
-          <Button color="red" onClick={pickNumber}>
-            Sacar bolilla
+          <Button color="red" className="tracking-wide" onClick={pickNumber}>
+            SACAR BOLILLA
           </Button>
         </>
       ) : (
@@ -240,14 +240,16 @@ export default function App() {
 
       <div className="my-2">
         <IconButton
-          onClick={() =>
+          onClick={() => {
+            if (!state.autoplay) pickNumber();
+
             dispatch({
               type: "TOGGLE_FEATURE",
               payload: {
                 autoplay: !state.autoplay
               }
-            })
-          }
+            });
+          }}
         >
           {state.autoplay ? <Icon>pause</Icon> : <Icon>play_arrow</Icon>}
         </IconButton>
