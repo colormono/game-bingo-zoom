@@ -1,7 +1,6 @@
 export default {
   minPlayers: 2,
-  maxPlayers: 8,
-  difficulty: 15,
+  maxPlayers: 6,
   timerInterval: 4500,
   colors: [
     "red",

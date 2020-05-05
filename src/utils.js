@@ -1,21 +1,9 @@
 import config from "./config";
 import { v4 } from "uuid";
 
-export function initNumbers() {
-  const b = [];
-  for (let n = 0; n < 100; n++) {
-    b.push({
-      id: n,
-      active: false,
-      // soon
-      type: "image",
-      image: "Cow.jpg",
-      relation: "C"
-    });
-  }
-  return b;
-}
-
+/**
+ * Return array of players
+ */
 export function initPlayers() {
   const b = [];
   for (let n = 0; n < config.minPlayers; n++) {
@@ -24,6 +12,9 @@ export function initPlayers() {
   return b;
 }
 
+/**
+ * Return an object with a unique id
+ */
 export function newPlayer() {
   return { id: v4() };
 }
@@ -40,12 +31,12 @@ function shuffle(a) {
   return a;
 }
 
-export function createBoards(boards, numbers) {
+export function createBoards(boards = [], numbers = [], difficulty = 15) {
   const gameBoards = [];
 
   boards.map((board, index) => {
     const randomNumbers = shuffle([...numbers]);
-    const boardNumbers = randomNumbers.slice(0, config.difficulty);
+    const boardNumbers = randomNumbers.slice(0, difficulty);
     const sortedNumbers = boardNumbers.sort(
       (a, b) => parseFloat(a.id) - parseFloat(b.id)
     );
